@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>My QR Code Generator</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
   <style>
@@ -17,13 +17,13 @@
       border-radius: 5px; 
       cursor: pointer;
     }
-    #downloadBtn:hover {
-      background: #0056b3;
-    }
+    #downloadBtn:hover { background: #0056b3; }
+    /* make canvas pixels sharp */
+    canvas { image-rendering: pixelated; }
   </style>
 </head>
 <body>
-  <h1>QR Code Generator Khas Untuk Tarmizi</h1>
+  <h1>QR Code Generator Khas Untuk Rakyat Madani</h1>
   <input type="text" id="text" placeholder="Enter text or URL" size="40"/>
   <button onclick="generateQR()">Generate</button>
 
@@ -34,28 +34,72 @@
     let currentCanvas = null;
 
     function generateQR() {
-      let text = document.getElementById("text").value;
+      const text = document.getElementById("text").value.trim();
       if (!text) return alert("Please enter some text or URL");
 
-      // Create new canvas
-      let canvas = document.createElement("canvas");
+      // Config
+      const desiredWidth = 320;         // requested total image width (px)
+      const marginModules = 0;          // quiet-zone in modules (set to 4 for standard margin)
+      const finderColor = "#c00000";    // color for the three finder boxes
+      const darkColor = "#1f4e78";      // color for other dark modules
+      const lightColor = "#ffffff";     // background (light modules)
 
-      // Generate QR with bigger size
-      QRCode.toCanvas(canvas, text, { width: 300, margin: 2 }, function (err) {
-        if (err) console.error(err);
+      // Create the QR symbol object (gives access to modules.size and modules.data)
+      const qr = QRCode.create(text, { errorCorrectionLevel: "M" }); // create() returns the bitmatrix
+      const moduleCount = qr.modules.size;        // number of modules per side (e.g. 21, 25, 29, ...)
+      const modulesData = qr.modules.data;        // flat array of size*size (row-major)
 
-        document.getElementById("qrcode").innerHTML = "";
-        document.getElementById("qrcode").appendChild(canvas);
-        currentCanvas = canvas;
+      // compute integer scale (px per module) to keep crisp squares
+      let scale = Math.floor(desiredWidth / (moduleCount + 2 * marginModules));
+      if (scale < 1) scale = 1; // fallback if requested width is too small
+      const canvasSize = (moduleCount + 2 * marginModules) * scale;
 
-        // Show download button
-        document.getElementById("downloadBtn").style.display = "inline-block";
-      });
+      // create canvas sized to an integer multiple of modules (avoids blur)
+      const canvas = document.createElement("canvas");
+      canvas.width = canvasSize;
+      canvas.height = canvasSize;
+      const ctx = canvas.getContext("2d");
+      ctx.imageSmoothingEnabled = false;
+
+      // fill background
+      ctx.fillStyle = lightColor;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // draw every module: if dark -> draw either finderColor or darkColor,
+      // if light -> skip (background already white)
+      for (let y = 0; y < moduleCount; y++) {
+        for (let x = 0; x < moduleCount; x++) {
+          const idx = y * moduleCount + x;
+          const isDark = !!modulesData[idx]; // truthy if a dark module
+
+          if (!isDark) continue;
+
+          // finder pattern areas: 7x7 modules in three corners
+          const inTopLeftFinder = (x < 7 && y < 7);
+          const inTopRightFinder = (x >= moduleCount - 7 && y < 7);
+          const inBottomLeftFinder = (x < 7 && y >= moduleCount - 7);
+          const inFinder = inTopLeftFinder || inTopRightFinder || inBottomLeftFinder;
+
+          ctx.fillStyle = inFinder ? finderColor : darkColor;
+
+          // draw module at (x+margin, y+margin) scaled
+          const px = (x + marginModules) * scale;
+          const py = (y + marginModules) * scale;
+          ctx.fillRect(px, py, scale, scale);
+        }
+      }
+
+      // put canvas into DOM and expose for download
+      const container = document.getElementById("qrcode");
+      container.innerHTML = "";
+      container.appendChild(canvas);
+      currentCanvas = canvas;
+      document.getElementById("downloadBtn").style.display = "inline-block";
     }
 
     function downloadQR() {
       if (!currentCanvas) return;
-      let link = document.createElement("a");
+      const link = document.createElement("a");
       link.download = "qrcode.png";
       link.href = currentCanvas.toDataURL("image/png");
       link.click();
