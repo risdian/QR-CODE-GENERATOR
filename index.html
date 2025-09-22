@@ -8,7 +8,7 @@
   <style>
     body {
       font-family: "Poppins", Arial, sans-serif;
-      background: #f5f7fa;
+      background: linear-gradient(135deg, #f0f4ff, #fefefe);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -18,96 +18,141 @@
 
     .container {
       background: #fff;
-      border-radius: 16px;
+      border-radius: 20px;
       padding: 30px;
-      width: 460px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      width: 450px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
       text-align: center;
-      animation: fadeIn 0.5s ease;
+      animation: fadeIn 0.6s ease;
     }
 
     h1 {
-      font-size: 20px;
+      font-size: 22px;
       margin-bottom: 6px;
-      color: #333;
+      color: #222;
     }
 
     h2 {
       font-size: 14px;
       font-weight: normal;
-      color: #666;
+      color: #777;
       margin-bottom: 20px;
     }
 
-    select,
-    input[type="text"] {
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      background: #f1f4f9;
+      color: #444;
+      transition: all 0.25s ease;
+    }
+
+    .tab.active {
+      background: #007bff;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
+    }
+
+    input[type="text"],
+    input[type="url"] {
       width: 100%;
       padding: 12px 16px;
       border: 1px solid #ddd;
-      border-radius: 8px;
+      border-radius: 10px;
       font-size: 14px;
-      margin: 14px 0;
+      margin: 12px 0;
       outline: none;
-      transition: border 0.2s;
+      transition: all 0.25s;
       box-sizing: border-box;
     }
 
-    input:focus,
-    select:focus {
-      border: 1px solid #007bff;
-    }
-
-    button {
-      padding: 10px 20px;
-      background: #007bff;
-      color: #fff;
-      font-size: 14px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      margin-top: 12px;
-      transition: background 0.2s, transform 0.1s;
-    }
-
-    button:hover {
-      background: #0056b3;
-    }
-
-    button:active {
-      transform: scale(0.97);
+    input[type="text"]:focus,
+    input[type="url"]:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
     }
 
     .controls {
       margin-top: 18px;
       display: flex;
-      justify-content: space-between;
       flex-wrap: wrap;
       gap: 12px;
+      justify-content: space-between;
     }
 
     .control-group {
       flex: 1;
-      min-width: 100px;
+      min-width: 120px;
       background: #f8f9fc;
-      border-radius: 10px;
-      padding: 10px;
+      border-radius: 12px;
+      padding: 12px;
       text-align: center;
     }
 
     label {
       display: block;
       font-size: 13px;
-      font-weight: bold;
+      font-weight: 600;
       margin-bottom: 6px;
-      color: #444;
+      color: #333;
+    }
+
+    .color-input {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
     }
 
     input[type="color"] {
-      width: 50px;
+      width: 36px;
       height: 32px;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
-      background: none;
+    }
+
+    input[type="text"].hex {
+      width: 70px;
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    button {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.25s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0056b3, #00408d);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 91, 187, 0.25);
+    }
+
+    button:active {
+      transform: scale(0.98);
     }
 
     #qrcode {
@@ -138,38 +183,66 @@
 <body>
   <div class="container">
     <h1>QR Code Generator</h1>
-    <h2>Choose type & customize your QR</h2>
+    <h2>Create & customize your QR</h2>
 
-    <!-- Type Selection -->
-    <select id="qrType" onchange="toggleInputs()">
-      <option value="link">Link</option>
-      <option value="map">Map</option>
-    </select>
-
-    <!-- Input Fields -->
-    <div id="linkInput">
-      <input type="text" id="text" placeholder="Enter URL" />
+    <div class="tabs">
+      <div class="tab active" onclick="switchTab('link')">Link</div>
+      <div class="tab" onclick="switchTab('map')">Map</div>
     </div>
 
-    <div id="mapInput" style="display:none">
-      <input type="text" id="mapLocation" placeholder="Enter address or lat,lng" />
+    <div id="input-link">
+      <input type="url" id="linkInput" placeholder="Enter URL (https://...)" />
+    </div>
+
+    <div id="input-map" style="display:none">
+      <input type="text" id="mapInput" placeholder="Search place or paste coordinates" />
     </div>
 
     <button onclick="generateQR()">Generate QR</button>
 
-    <!-- Customization Controls -->
+    <!-- Color Controls -->
     <div class="controls">
       <div class="control-group">
-        <label for="finderColor">Finder</label>
-        <input type="color" id="finderColor" value="#c00000">
+        <label>Finder</label>
+        <div class="color-input">
+          <input type="color" id="finderColor" value="#c00000">
+          <input type="text" class="hex" id="finderHex" value="#c00000">
+        </div>
       </div>
       <div class="control-group">
-        <label for="moduleColor">Modules</label>
-        <input type="color" id="moduleColor" value="#1f4e78">
+        <label>Modules</label>
+        <div class="color-input">
+          <input type="color" id="moduleColor" value="#1f4e78">
+          <input type="text" class="hex" id="moduleHex" value="#1f4e78">
+        </div>
       </div>
       <div class="control-group">
-        <label for="bgColor">Background</label>
-        <input type="color" id="bgColor" value="#ffffff">
+        <label>Background</label>
+        <div class="color-input">
+          <input type="color" id="bgColor" value="#ffffff">
+          <input type="text" class="hex" id="bgHex" value="#ffffff">
+        </div>
+      </div>
+    </div>
+
+    <!-- New Controls -->
+    <div class="controls">
+      <div class="control-group">
+        <label>Style</label>
+        <select id="qrStyle">
+          <option value="square">Square</option>
+          <option value="dots">Dots</option>
+          <option value="rounded">Rounded</option>
+        </select>
+      </div>
+      <div class="control-group">
+        <label>Theme</label>
+        <select id="qrTheme">
+          <option value="custom">Custom</option>
+          <option value="business">Business</option>
+          <option value="fun">Fun</option>
+          <option value="dark">Dark</option>
+        </select>
       </div>
     </div>
 
@@ -179,66 +252,70 @@
 
   <script>
     let currentCanvas = null;
+    let currentTab = "link";
+    let lastText = "";
 
-    function toggleInputs() {
-      const type = document.getElementById("qrType").value;
-      document.getElementById("linkInput").style.display = type === "link" ? "block" : "none";
-      document.getElementById("mapInput").style.display = type === "map" ? "block" : "none";
+    function switchTab(tab) {
+      currentTab = tab;
+      document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+      document.querySelector(`.tab:nth-child(${tab === 'link' ? 1 : 2})`).classList.add("active");
+
+      document.getElementById("input-link").style.display = tab === "link" ? "block" : "none";
+      document.getElementById("input-map").style.display = tab === "map" ? "block" : "none";
     }
 
     function generateQR() {
-      const type = document.getElementById("qrType").value;
-      let content = "";
-
-      if (type === "link") {
-        const text = document.getElementById("text").value.trim();
-        if (!text) return alert("Please enter a URL");
-        content = text;
+      if (currentTab === "link") {
+        lastText = document.getElementById("linkInput").value.trim();
+      } else {
+        const place = document.getElementById("mapInput").value.trim();
+        if (!place) return alert("Please enter a location");
+        lastText = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(place)}`;
       }
-
-      if (type === "map") {
-        const location = document.getElementById("mapLocation").value.trim();
-        if (!location) return alert("Please enter a location");
-
-        if (location.startsWith("http")) {
-          content = location;
-        } else {
-          content = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
-        }
-      }
-      drawQR(content);
+      if (!lastText) return alert("Please provide input");
+      renderQR();
     }
 
-    function drawQR(content) {
+    function renderQR() {
+      if (!lastText) return;
+
+      // Apply theme only when user switches theme, not every render
+      if (window.applyTheme) {
+        const theme = document.getElementById("qrTheme").value;
+        if (theme === "business") {
+          setColors("#003366", "#0066cc", "#ffffff");
+        } else if (theme === "fun") {
+          setColors("#e91e63", "#9c27b0", "#fffbe6");
+        } else if (theme === "dark") {
+          setColors("#ffffff", "#cccccc", "#000000");
+        }
+        window.applyTheme = false; // allow manual color edits after applying theme
+      }
+
       const finderColor = document.getElementById("finderColor").value;
       const darkColor = document.getElementById("moduleColor").value;
       const lightColor = document.getElementById("bgColor").value;
 
       const desiredWidth = 320;
-      const marginModules = 0;
-
-      const qr = QRCode.create(content, { errorCorrectionLevel: "M" });
+      const qr = QRCode.create(lastText, { errorCorrectionLevel: "M" });
       const moduleCount = qr.modules.size;
       const modulesData = qr.modules.data;
 
-      let scale = Math.floor(desiredWidth / (moduleCount + 2 * marginModules));
-      if (scale < 1) scale = 1;
-      const canvasSize = (moduleCount + 2 * marginModules) * scale;
-
+      const scale = Math.floor(desiredWidth / moduleCount);
+      const canvasSize = moduleCount * scale;
       const canvas = document.createElement("canvas");
       canvas.width = canvasSize;
       canvas.height = canvasSize;
       const ctx = canvas.getContext("2d");
-      ctx.imageSmoothingEnabled = false;
 
       ctx.fillStyle = lightColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+      const style = document.getElementById("qrStyle").value;
       for (let y = 0; y < moduleCount; y++) {
         for (let x = 0; x < moduleCount; x++) {
           const idx = y * moduleCount + x;
-          const isDark = !!modulesData[idx];
-          if (!isDark) continue;
+          if (!modulesData[idx]) continue;
 
           const inFinder =
             (x < 7 && y < 7) ||
@@ -246,9 +323,29 @@
             (x < 7 && y >= moduleCount - 7);
 
           ctx.fillStyle = inFinder ? finderColor : darkColor;
-          const px = (x + marginModules) * scale;
-          const py = (y + marginModules) * scale;
-          ctx.fillRect(px, py, scale, scale);
+          const px = x * scale;
+          const py = y * scale;
+
+          if (style === "square") {
+            ctx.fillRect(px, py, scale, scale);
+          } else if (style === "dots") {
+            ctx.beginPath();
+            ctx.arc(px + scale / 2, py + scale / 2, scale / 2.2, 0, Math.PI * 2);
+            ctx.fill();
+          } else if (style === "rounded") {
+            const radius = scale * 0.3;
+            ctx.beginPath();
+            ctx.moveTo(px + radius, py);
+            ctx.lineTo(px + scale - radius, py);
+            ctx.quadraticCurveTo(px + scale, py, px + scale, py + radius);
+            ctx.lineTo(px + scale, py + scale - radius);
+            ctx.quadraticCurveTo(px + scale, py + scale, px + scale - radius, py + scale);
+            ctx.lineTo(px + radius, py + scale);
+            ctx.quadraticCurveTo(px, py + scale, px, py + scale - radius);
+            ctx.lineTo(px, py + radius);
+            ctx.quadraticCurveTo(px, py, px + radius, py);
+            ctx.fill();
+          }
         }
       }
 
@@ -259,6 +356,15 @@
       document.getElementById("downloadBtn").style.display = "inline-block";
     }
 
+    function setColors(finder, module, bg) {
+      document.getElementById("finderColor").value = finder;
+      document.getElementById("finderHex").value = finder;
+      document.getElementById("moduleColor").value = module;
+      document.getElementById("moduleHex").value = module;
+      document.getElementById("bgColor").value = bg;
+      document.getElementById("bgHex").value = bg;
+    }
+
     function downloadQR() {
       if (!currentCanvas) return;
       const link = document.createElement("a");
@@ -266,6 +372,38 @@
       link.href = currentCanvas.toDataURL("image/png");
       link.click();
     }
+
+    // Sync color pickers & hex inputs
+    function syncColorInput(colorId, hexId) {
+      const colorInput = document.getElementById(colorId);
+      const hexInput = document.getElementById(hexId);
+
+      colorInput.addEventListener("input", () => {
+        hexInput.value = colorInput.value;
+        renderQR();
+      });
+
+      hexInput.addEventListener("input", () => {
+        let val = hexInput.value;
+        if (!val.startsWith("#")) val = "#" + val;
+        if (/^#[0-9A-Fa-f]{6}$/.test(val)) {
+          colorInput.value = val;
+          hexInput.value = val;
+          renderQR();
+        }
+      });
+    }
+
+    syncColorInput("finderColor", "finderHex");
+    syncColorInput("moduleColor", "moduleHex");
+    syncColorInput("bgColor", "bgHex");
+
+    // Auto update on style/theme change
+    document.getElementById("qrStyle").addEventListener("change", renderQR);
+    document.getElementById("qrTheme").addEventListener("change", () => {
+      window.applyTheme = true;
+      renderQR();
+    });
   </script>
 </body>
 
