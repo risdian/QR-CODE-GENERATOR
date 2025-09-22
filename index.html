@@ -20,7 +20,7 @@
       background: #fff;
       border-radius: 16px;
       padding: 30px;
-      width: 420px;
+      width: 460px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
       animation: fadeIn 0.5s ease;
@@ -39,6 +39,7 @@
       margin-bottom: 20px;
     }
 
+    select,
     input[type="text"] {
       width: 100%;
       padding: 12px 16px;
@@ -51,7 +52,8 @@
       box-sizing: border-box;
     }
 
-    input[type="text"]:focus {
+    input:focus,
+    select:focus {
       border: 1px solid #007bff;
     }
 
@@ -136,9 +138,23 @@
 <body>
   <div class="container">
     <h1>QR Code Generator</h1>
-    <h2>Customize colors & download your QR</h2>
+    <h2>Choose type & customize your QR</h2>
 
-    <input type="text" id="text" placeholder="Enter text or URL" />
+    <!-- Type Selection -->
+    <select id="qrType" onchange="toggleInputs()">
+      <option value="link">Link</option>
+      <option value="map">Map</option>
+    </select>
+
+    <!-- Input Fields -->
+    <div id="linkInput">
+      <input type="text" id="text" placeholder="Enter URL" />
+    </div>
+
+    <div id="mapInput" style="display:none">
+      <input type="text" id="mapLocation" placeholder="Enter address or lat,lng" />
+    </div>
+
     <button onclick="generateQR()">Generate QR</button>
 
     <!-- Customization Controls -->
@@ -164,10 +180,36 @@
   <script>
     let currentCanvas = null;
 
-    function generateQR() {
-      const text = document.getElementById("text").value.trim();
-      if (!text) return alert("Please enter some text or URL");
+    function toggleInputs() {
+      const type = document.getElementById("qrType").value;
+      document.getElementById("linkInput").style.display = type === "link" ? "block" : "none";
+      document.getElementById("mapInput").style.display = type === "map" ? "block" : "none";
+    }
 
+    function generateQR() {
+      const type = document.getElementById("qrType").value;
+      let content = "";
+
+      if (type === "link") {
+        const text = document.getElementById("text").value.trim();
+        if (!text) return alert("Please enter a URL");
+        content = text;
+      }
+
+      if (type === "map") {
+        const location = document.getElementById("mapLocation").value.trim();
+        if (!location) return alert("Please enter a location");
+
+        if (location.startsWith("http")) {
+          content = location;
+        } else {
+          content = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(location)}`;
+        }
+      }
+      drawQR(content);
+    }
+
+    function drawQR(content) {
       const finderColor = document.getElementById("finderColor").value;
       const darkColor = document.getElementById("moduleColor").value;
       const lightColor = document.getElementById("bgColor").value;
@@ -175,7 +217,7 @@
       const desiredWidth = 320;
       const marginModules = 0;
 
-      const qr = QRCode.create(text, { errorCorrectionLevel: "M" });
+      const qr = QRCode.create(content, { errorCorrectionLevel: "M" });
       const moduleCount = qr.modules.size;
       const modulesData = qr.modules.data;
 
@@ -189,11 +231,9 @@
       const ctx = canvas.getContext("2d");
       ctx.imageSmoothingEnabled = false;
 
-      // background
       ctx.fillStyle = lightColor;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // draw modules
       for (let y = 0; y < moduleCount; y++) {
         for (let x = 0; x < moduleCount; x++) {
           const idx = y * moduleCount + x;
@@ -206,7 +246,6 @@
             (x < 7 && y >= moduleCount - 7);
 
           ctx.fillStyle = inFinder ? finderColor : darkColor;
-
           const px = (x + marginModules) * scale;
           const py = (y + marginModules) * scale;
           ctx.fillRect(px, py, scale, scale);
