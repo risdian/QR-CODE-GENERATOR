@@ -39,6 +39,15 @@ body {
 }
 
 /* ─── Layout ─────────────────────────────────────────────── */
+.page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 20px;
+    width: 100%;
+    max-width: 1400px;
+}
+
 .page {
     display: grid;
     grid-template-columns: minmax(0, 440px) minmax(0, 320px);
@@ -46,6 +55,27 @@ body {
     align-items: start;
     max-width: 800px;
     width: 100%;
+    flex-shrink: 0;
+}
+
+/* ─── Ad Sidebars ────────────────────────────────────────── */
+.ad-sidebar {
+    width: 160px;
+    min-height: 600px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    flex-shrink: 0;
+}
+
+.ad-sidebar ins {
+    width: 100%;
+    min-height: 600px;
 }
 
 .card {
@@ -561,6 +591,12 @@ select:focus {
 }
 
 /* ─── Responsive ─────────────────────────────────────────── */
+@media (max-width: 1200px) {
+    .ad-sidebar {
+        display: none;
+    }
+}
+
 @media (max-width: 740px) {
     body {
         padding: 14px;
