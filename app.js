@@ -3,6 +3,7 @@ let currentCanvas = null;
 let currentTab = "url";
 let lastText = "";
 let logoDataUrl = null;
+const MAX_LENGTH = 300;
 
 /* ─── Tab switching ──────────────────────────────────────── */
 document.querySelectorAll(".tab").forEach(btn => {
@@ -100,7 +101,13 @@ function getContent() {
 function generateQR() {
     clearError();
     const result = getContent();
+
     if (result.error) return showError(result.error);
+
+    if (result.text.length > MAX_LENGTH) {
+        return showError("Content too long. Max " + MAX_LENGTH + " characters.");
+    }
+
     lastText = result.text;
     renderQR();
 }
@@ -286,6 +293,10 @@ syncColor("finderColor", "finderHex");
 syncColor("moduleColor", "moduleHex");
 syncColor("bgColor", "bgHex");
 
+attachCharCounter("urlInput", "urlCount");
+attachCharCounter("mapInput", "mapCount");
+attachCharCounter("textInput", "textCount");
+
 function setColors(finder, mod, bg) {
     document.getElementById("finderColor").value = finder;
     document.getElementById("finderHex").value = finder;
@@ -356,4 +367,22 @@ function clearError() {
     const el = document.getElementById("errorMsg");
     el.textContent = "";
     el.style.display = "none";
+}
+
+function attachCharCounter(inputId, counterId) {
+    const input = document.getElementById(inputId);
+    const counter = document.getElementById(counterId);
+
+    if (!input || !counter) return;
+
+    input.addEventListener("input", () => {
+        const length = input.value.length;
+        counter.textContent = `${length} / ${MAX_LENGTH}`;
+
+        if (length > MAX_LENGTH) {
+            counter.classList.add("limit");
+        } else {
+            counter.classList.remove("limit");
+        }
+    });
 }
