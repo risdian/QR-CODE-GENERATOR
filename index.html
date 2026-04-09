@@ -3,14 +3,181 @@
 
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>QR Code Generator</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
-    rel="stylesheet" />
+  <title>Customizable QR Code Generator</title>
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: "Poppins", Arial, sans-serif;
+      background: linear-gradient(135deg, #f0f4ff, #fefefe);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      padding: 30px;
+      width: 450px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      animation: fadeIn 0.6s ease;
+    }
+
+    h1 {
+      font-size: 22px;
+      margin-bottom: 6px;
+      color: #222;
+    }
+
+    h2 {
+      font-size: 14px;
+      font-weight: normal;
+      color: #777;
+      margin-bottom: 20px;
+    }
+
+    .tabs {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      background: #f1f4f9;
+      color: #444;
+      transition: all 0.25s ease;
+    }
+
+    .tab.active {
+      background: #007bff;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25);
+    }
+
+    input[type="text"],
+    input[type="url"] {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 14px;
+      margin: 12px 0;
+      outline: none;
+      transition: all 0.25s;
+      box-sizing: border-box;
+    }
+
+    input[type="text"]:focus,
+    input[type="url"]:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 6px rgba(0, 123, 255, 0.25);
+    }
+
+    .controls {
+      margin-top: 18px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      justify-content: space-between;
+    }
+
+    .control-group {
+      flex: 1;
+      min-width: 120px;
+      background: #f8f9fc;
+      border-radius: 12px;
+      padding: 12px;
+      text-align: center;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #333;
+    }
+
+    .color-input {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    input[type="color"] {
+      width: 36px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    input[type="text"].hex {
+      width: 70px;
+      padding: 6px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 12px;
+      text-align: center;
+    }
+
+    button {
+      padding: 12px 20px;
+      background: linear-gradient(135deg, #007bff, #0056b3);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 500;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: all 0.25s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(135deg, #0056b3, #00408d);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 14px rgba(0, 91, 187, 0.25);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #qrcode {
+      margin-top: 20px;
+    }
+
+    canvas {
+      border-radius: 12px;
+      padding: 8px;
+      background: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
 </head>
 
 <body>
