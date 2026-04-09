@@ -1,21 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "",
-  "outputDirectory": ".",
   "public": true,
-  "cleanUrls": true,
-  "builds": [
-    {
-      "src": "*.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.css",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "*.js",
-      "use": "@vercel/static"
-    }
-  ]
+  "cleanUrls": true
 }
