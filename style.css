@@ -648,3 +648,16 @@ select:focus {
         padding: 7px 4px;
     }
 }
+
+.char-count {
+    font-size: 12px;
+    color: #888;
+    text-align: right;
+    margin-top: -6px;
+    margin-bottom: 8px;
+    font-family: "DM Mono", monospace;
+  }
+  
+  .char-count.limit {
+    color: #d32f2f;
+  }
