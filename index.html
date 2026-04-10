@@ -3,26 +3,36 @@
 
 <head>
   <meta charset="UTF-8" />
-   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>QR Code Generator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap"
     rel="stylesheet" />
+    
   <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
-    <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css" />
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3711839174019136"
-     crossorigin="anonymous"></script>
-       <meta name="google-adsense-account" content="ca-pub-3711839174019136" />
+    crossorigin="anonymous"></script>
+  <meta name="google-adsense-account" content="ca-pub-3711839174019136" />
   <style>
     body {
-      font-family: "Poppins", Arial, sans-serif;
-      background: linear-gradient(135deg, #f0f4ff, #fefefe);
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family: var(--font-sans);
+      background: var(--bg);
       min-height: 100vh;
-      margin: 0;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 32px 16px;
+      color: var(--text);
+    }
+
+    .page {
+      display: grid;
+      grid-template-columns: minmax(0, 440px) minmax(0, 320px);
+      gap: 20px;
+      align-items: start;
+      width: 100%;
     }
 
     .container {
@@ -190,214 +200,217 @@
 </head>
 
 <body>
-
-  <div class="page">
-
-    <!-- LEFT: Controls -->
-    <div class="card controls-card">
-
-      <div class="brand">
-        <div class="brand-dot"></div>
-        <span>QR Studio</span>
+  <div class="shell">
+    <div class="topbar">
+      <img src="images/QRlogo.png" alt="QR Studio logo" class="brand-logo" />
+      <div class="brand-name">
+        <span class="brand-title">QR Generator</span>
+        <span class="brand-sub">Create & customize your QR codes</span>
       </div>
-
-      <!-- Tabs -->
-      <div class="tab-bar">
-        <button class="tab active" data-tab="url">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M9 1.5A7.5 7.5 0 1 1 1.5 9 7.5 7.5 0 0 1 9 1.5Z" stroke="currentColor" stroke-width="1.3" />
-            <path d="M9 1.5c-2 2-3 4.5-3 7.5s1 5.5 3 7.5M9 1.5c2 2 3 4.5 3 7.5s-1 5.5-3 7.5M1.5 9h15"
-              stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-          </svg>
-        </button>
-        <button class="tab" data-tab="map">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M9 1.5C6.5 1.5 4.5 3.5 4.5 6c0 3.75 4.5 10.5 4.5 10.5S13.5 9.75 13.5 6c0-2.5-2-4.5-4.5-4.5Z"
-              stroke="currentColor" stroke-width="1.3" />
-            <circle cx="9" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3" />
-          </svg>
-        </button>
-        <button class="tab" data-tab="text">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <path d="M3 4.5h12M3 7.5h12M3 10.5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-            <rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3" />
-          </svg>
-        </button>
-        <button class="tab" data-tab="vcard">
-          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-            <rect x="1.5" y="4" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.3" />
-            <circle cx="6" cy="9" r="2" stroke="currentColor" stroke-width="1.3" />
-            <path d="M10 7.5h4M10 10.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-          </svg>
-        </button>
-      </div>
-
-      <!-- Tab panels -->
-      <div class="tab-panel active" id="panel-url">
-        <input class="field" type="url" id="urlInput" placeholder="https://example.com" />
-        <div class="char-count" id="urlCount">0 / 300</div>
-      </div>
-
-      <div class="tab-panel" id="panel-map">
-        <input class="field" type="text" id="mapInput" placeholder="Address or coordinates" />
-<div class="char-count" id="mapCount">0 / 300</div>
-      </div>
-
-      <div class="tab-panel" id="panel-text">
-        <textarea class="field textarea" id="textInput" rows="4"></textarea>
-<div class="char-count" id="textCount">0 / 300</div>
-      </div>
-
-      <div class="tab-panel" id="panel-vcard">
-        <div class="field-grid">
-          <input class="field" id="vcName" placeholder="Full name" />
-          <input class="field" id="vcOrg" placeholder="Organisation" />
-          <input class="field" id="vcPhone" placeholder="Phone number" />
-          <input class="field" id="vcEmail" placeholder="Email address" />
-          <input class="field" id="vcUrl" placeholder="Website URL" />
-          <input class="field" id="vcAddress" placeholder="Address" />
-        </div>
-      </div>
-
-      <div class="error-msg" id="errorMsg"></div>
-
-      <div class="rule"></div>
-
-      <!-- Colors -->
-      <div class="section-head">Colors</div>
-      <div class="color-row">
-        <div class="color-item">
-          <label>Finder</label>
-          <div class="swatch-row">
-            <input type="color" id="finderColor" value="#c00000">
-            <input type="text" class="mono-input" id="finderHex" value="#c00000">
-          </div>
-        </div>
-        <div class="color-item">
-          <label>Modules</label>
-          <div class="swatch-row">
-            <input type="color" id="moduleColor" value="#1f4e78">
-            <input type="text" class="mono-input" id="moduleHex" value="#1f4e78">
-          </div>
-        </div>
-        <div class="color-item">
-          <label>Background</label>
-          <div class="swatch-row">
-            <input type="color" id="bgColor" value="#ffffff">
-            <input type="text" class="mono-input" id="bgHex" value="#ffffff">
-          </div>
-        </div>
-      </div>
-
-      <div class="rule"></div>
-
-      <!-- Style + Size -->
-      <div class="section-head">Style & Output</div>
-      <div class="option-row">
-        <div class="option-item">
-          <label>Module shape</label>
-          <select id="qrStyle">
-            <option value="square">Square</option>
-            <option value="dots">Dots</option>
-            <option value="rounded">Rounded</option>
-          </select>
-        </div>
-        <div class="option-item">
-          <label>Theme preset</label>
-          <select id="qrTheme">
-            <option value="custom">Custom</option>
-            <option value="classic">Classic</option>
-            <option value="navy">Navy</option>
-            <option value="charcoal">Charcoal</option>
-            <option value="forest">Forest</option>
-            <option value="rose">Rose</option>
-          </select>
-        </div>
-        <div class="option-item">
-          <label>Export size</label>
-          <select id="qrSize">
-            <option value="256">Small — 256px</option>
-            <option value="512" selected>Medium — 512px</option>
-            <option value="1024">Large — 1024px</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="rule"></div>
-
-      <!-- Logo upload -->
-      <div class="section-head">Logo <span class="optional">optional</span></div>
-      <div class="logo-zone" id="logoZone">
-        <input type="file" id="logoFile" accept="image/*" hidden />
-        <div class="logo-zone-inner" id="logoZoneInner" onclick="document.getElementById('logoFile').click()">
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path d="M10 3v10M5 8l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
-          </svg>
-          <span>Upload logo image</span>
-        </div>
-        <div class="logo-preview" id="logoPreview" style="display:none">
-          <img id="logoImg" src="" alt="Logo" />
-          <button class="logo-remove" onclick="removeLogo()">Remove</button>
-        </div>
-      </div>
-
-      <button class="btn-generate" onclick="generateQR()">Generate QR code</button>
     </div>
 
-    <!-- RIGHT: Preview -->
-    <div class="card preview-card">
-      <div class="preview-label">Preview</div>
+    <div class="page">
 
-      <div class="preview-area" id="previewArea">
-        <div class="preview-placeholder" id="previewPlaceholder">
-          <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
-            <rect x="4" y="4" width="18" height="18" rx="3" fill="#d4d4d0" />
-            <rect x="8" y="8" width="10" height="10" rx="1.5" fill="#f5f5f3" />
-            <rect x="30" y="4" width="18" height="18" rx="3" fill="#d4d4d0" />
-            <rect x="34" y="8" width="10" height="10" rx="1.5" fill="#f5f5f3" />
-            <rect x="4" y="30" width="18" height="18" rx="3" fill="#d4d4d0" />
-            <rect x="8" y="34" width="10" height="10" rx="1.5" fill="#f5f5f3" />
-            <rect x="30" y="30" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="36.5" y="30" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="43" y="30" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="30" y="36.5" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="36.5" y="36.5" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="43" y="36.5" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="30" y="43" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="36.5" y="43" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-            <rect x="43" y="43" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
-          </svg>
-          <p>Your QR code will appear here</p>
+      <!-- LEFT: Controls -->
+      <div class="card controls-card">
+        <!-- Tabs -->
+        <div class="tab-bar">
+          <button class="tab active" data-tab="url">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1.5A7.5 7.5 0 1 1 1.5 9 7.5 7.5 0 0 1 9 1.5Z" stroke="currentColor" stroke-width="1.3" />
+              <path d="M9 1.5c-2 2-3 4.5-3 7.5s1 5.5 3 7.5M9 1.5c2 2 3 4.5 3 7.5s-1 5.5-3 7.5M1.5 9h15"
+                stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+          </button>
+          <button class="tab" data-tab="map">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M9 1.5C6.5 1.5 4.5 3.5 4.5 6c0 3.75 4.5 10.5 4.5 10.5S13.5 9.75 13.5 6c0-2.5-2-4.5-4.5-4.5Z"
+                stroke="currentColor" stroke-width="1.3" />
+              <circle cx="9" cy="6" r="1.5" stroke="currentColor" stroke-width="1.3" />
+            </svg>
+          </button>
+          <button class="tab" data-tab="text">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <path d="M3 4.5h12M3 7.5h12M3 10.5h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+              <rect x="2" y="2" width="14" height="14" rx="2" stroke="currentColor" stroke-width="1.3" />
+            </svg>
+          </button>
+          <button class="tab" data-tab="vcard">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+              <rect x="1.5" y="4" width="15" height="10" rx="2" stroke="currentColor" stroke-width="1.3" />
+              <circle cx="6" cy="9" r="2" stroke="currentColor" stroke-width="1.3" />
+              <path d="M10 7.5h4M10 10.5h3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+          </button>
         </div>
-        <div id="qrcode" style="display:none"></div>
+
+        <!-- Tab panels -->
+        <div class="tab-panel active" id="panel-url">
+          <input class="field" type="url" id="urlInput" placeholder="https://example.com" />
+          <div class="char-count" id="urlCount">0 / 300</div>
+        </div>
+
+        <div class="tab-panel" id="panel-map">
+          <input class="field" type="text" id="mapInput" placeholder="Address or coordinates" />
+          <div class="char-count" id="mapCount">0 / 300</div>
+        </div>
+
+        <div class="tab-panel" id="panel-text">
+          <textarea class="field textarea" id="textInput" rows="4"></textarea>
+          <div class="char-count" id="textCount">0 / 300</div>
+        </div>
+
+        <div class="tab-panel" id="panel-vcard">
+          <div class="field-grid">
+            <input class="field" id="vcName" placeholder="Full name" />
+            <input class="field" id="vcOrg" placeholder="Organisation" />
+            <input class="field" id="vcPhone" placeholder="Phone number" />
+            <input class="field" id="vcEmail" placeholder="Email address" />
+            <input class="field" id="vcUrl" placeholder="Website URL" />
+            <input class="field" id="vcAddress" placeholder="Address" />
+          </div>
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <div class="rule"></div>
+
+        <!-- Colors -->
+        <div class="section-head">Colors</div>
+        <div class="color-row">
+          <div class="color-item">
+            <label>Finder</label>
+            <div class="swatch-row">
+              <input type="color" id="finderColor" value="#c00000">
+              <input type="text" class="mono-input" id="finderHex" value="#c00000">
+            </div>
+          </div>
+          <div class="color-item">
+            <label>Modules</label>
+            <div class="swatch-row">
+              <input type="color" id="moduleColor" value="#1f4e78">
+              <input type="text" class="mono-input" id="moduleHex" value="#1f4e78">
+            </div>
+          </div>
+          <div class="color-item">
+            <label>Background</label>
+            <div class="swatch-row">
+              <input type="color" id="bgColor" value="#ffffff">
+              <input type="text" class="mono-input" id="bgHex" value="#ffffff">
+            </div>
+          </div>
+        </div>
+
+        <div class="rule"></div>
+
+        <!-- Style + Size -->
+        <div class="section-head">Style & Output</div>
+        <div class="option-row">
+          <div class="option-item">
+            <label>Module shape</label>
+            <select id="qrStyle">
+              <option value="square">Square</option>
+              <option value="dots">Dots</option>
+              <option value="rounded">Rounded</option>
+            </select>
+          </div>
+          <div class="option-item">
+            <label>Theme preset</label>
+            <select id="qrTheme">
+              <option value="custom">Custom</option>
+              <option value="classic">Classic</option>
+              <option value="navy">Navy</option>
+              <option value="charcoal">Charcoal</option>
+              <option value="forest">Forest</option>
+              <option value="rose">Rose</option>
+            </select>
+          </div>
+          <div class="option-item">
+            <label>Export size</label>
+            <select id="qrSize">
+              <option value="256">Small — 256px</option>
+              <option value="512" selected>Medium — 512px</option>
+              <option value="1024">Large — 1024px</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="rule"></div>
+
+        <!-- Logo upload -->
+        <div class="section-head">Logo <span class="optional">optional</span></div>
+        <div class="logo-zone" id="logoZone">
+          <input type="file" id="logoFile" accept="image/*" hidden />
+          <div class="logo-zone-inner" id="logoZoneInner" onclick="document.getElementById('logoFile').click()">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M10 3v10M5 8l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M3 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <span>Upload logo image</span>
+          </div>
+          <div class="logo-preview" id="logoPreview" style="display:none">
+            <img id="logoImg" src="" alt="Logo" />
+            <button class="logo-remove" onclick="removeLogo()">Remove</button>
+          </div>
+        </div>
+
+        <button class="btn-generate" onclick="generateQR()">Generate QR code</button>
       </div>
 
-      <div class="action-row" id="actionRow" style="display:none">
-        <button class="btn-action btn-copy" onclick="copyQR()">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-            <rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" />
-            <path d="M2 11V2h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-          </svg>
-          Copy image
-        </button>
-        <button class="btn-action btn-download" onclick="downloadQR()">
-          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
-            <path d="M7.5 2v8M4 7.5l3.5 3.5L11 7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
-              stroke-linejoin="round" />
-            <path d="M2 13h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
-          </svg>
-          Download PNG
-        </button>
+      <!-- RIGHT: Preview -->
+      <div class="card preview-card">
+        <div class="preview-label">Preview</div>
+
+        <div class="preview-area" id="previewArea">
+          <div class="preview-placeholder" id="previewPlaceholder">
+            <svg width="52" height="52" viewBox="0 0 52 52" fill="none">
+              <rect x="4" y="4" width="18" height="18" rx="3" fill="#d4d4d0" />
+              <rect x="8" y="8" width="10" height="10" rx="1.5" fill="#f5f5f3" />
+              <rect x="30" y="4" width="18" height="18" rx="3" fill="#d4d4d0" />
+              <rect x="34" y="8" width="10" height="10" rx="1.5" fill="#f5f5f3" />
+              <rect x="4" y="30" width="18" height="18" rx="3" fill="#d4d4d0" />
+              <rect x="8" y="34" width="10" height="10" rx="1.5" fill="#f5f5f3" />
+              <rect x="30" y="30" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="36.5" y="30" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="43" y="30" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="30" y="36.5" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="36.5" y="36.5" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="43" y="36.5" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="30" y="43" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="36.5" y="43" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+              <rect x="43" y="43" width="4.5" height="4.5" rx="1" fill="#d4d4d0" />
+            </svg>
+            <p>Your QR code will appear here</p>
+          </div>
+          <div id="qrcode" style="display:none"></div>
+        </div>
+
+        <div class="action-row" id="actionRow" style="display:none">
+          <button class="btn-action btn-copy" onclick="copyQR()">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3" />
+              <path d="M2 11V2h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+            Copy image
+          </button>
+          <button class="btn-action btn-download" onclick="downloadQR()">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <path d="M7.5 2v8M4 7.5l3.5 3.5L11 7.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M2 13h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+            </svg>
+            Download PNG
+          </button>
+        </div>
+
+        <div class="copy-toast" id="copyToast">Copied to clipboard</div>
       </div>
 
-      <div class="copy-toast" id="copyToast">Copied to clipboard</div>
     </div>
 
+    <script src="app.js"></script>
   </div>
-
-  <script src="app.js"></script>
 </body>
 
 </html>

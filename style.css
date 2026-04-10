@@ -56,12 +56,49 @@ body {
 }
 
 /* ─── Brand ──────────────────────────────────────────────── */
-.brand {
+.shell {
+    width: 100%;
+    max-width: 800px;
+  }
+  
+  .topbar {
+    padding: 0 0 24px 4px;
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 24px;
-}
+    gap: 14px;
+  }
+  
+  .brand-logo {
+    height: 40px;
+    width: auto;
+    display: block;
+    flex-shrink: 0;
+  }
+  
+  .brand-name {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    border-left: 1.5px solid var(--border-mid);
+    padding-left: 14px;
+  }
+  
+  .brand-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text);
+    line-height: 1;
+  }
+  
+  .brand-sub {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-3);
+    letter-spacing: 0.04em;
+  }
 
 .brand-dot {
     width: 8px;
