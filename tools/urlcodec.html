@@ -1,0 +1,47 @@
+<div class="page tool-page-wide">
+
+    <div class="card" style="flex:1; min-width:0;">
+      <div class="section-head">Input</div>
+      <textarea class="field textarea tool-textarea" id="urlInput2" placeholder="Paste a URL or text to encode/decode..."></textarea>
+  
+      <div class="rule"></div>
+  
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn-action btn-download" onclick="urlEncode()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path d="M6 5H4a3 3 0 0 0 0 6h2M9 5h2a3 3 0 0 1 0 6H9M5 7.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Encode
+        </button>
+        <button class="btn-action btn-download" onclick="urlDecode()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path d="M6 5H4a3 3 0 0 0 0 6h2M9 5h2a3 3 0 0 1 0 6H9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M5 7.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-dasharray="2 1.5"/>
+          </svg>
+          Decode
+        </button>
+        <button class="btn-action btn-copy" onclick="urlClear()">Clear</button>
+      </div>
+    </div>
+  
+    <div class="card" style="flex:1; min-width:0;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+        <div class="section-head" style="margin-bottom:0;">Output</div>
+        <div class="url-badge" id="urlBadge"></div>
+      </div>
+      <textarea class="field textarea tool-textarea output-area" id="urlOutput2" readonly placeholder="Result will appear here..."></textarea>
+  
+      <div class="output-actions" style="margin-top:12px;">
+        <button class="btn-action btn-copy" onclick="urlCopy()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2 11V2h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Copy output
+        </button>
+        <button class="btn-action btn-copy" onclick="urlSwap()">Use output as input</button>
+      </div>
+    </div>
+  
+    <div class="copy-toast" id="urlToast">Copied!</div>
+  </div>

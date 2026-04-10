@@ -1,0 +1,41 @@
+<div class="page tool-page-wide">
+
+    <div class="card" style="flex:1; min-width:0;">
+      <div class="section-head">Input JSON</div>
+      <textarea class="field textarea tool-textarea" id="jsonInput" placeholder='{"name":"John","age":30,"city":"New York"}'></textarea>
+  
+      <div class="rule"></div>
+  
+      <div style="display:flex; gap:8px; flex-wrap:wrap;">
+        <button class="btn-action btn-download" onclick="jsonFormat()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <path d="M5 2C3.5 2 3 2.8 3 4v2c0 1-.5 1.5-1.5 1.5C2.5 7.5 3 8 3 9v2c0 1.2.5 2 2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M10 2c1.5 0 2 .8 2 2v2c0 1 .5 1.5 1.5 1.5C12.5 7.5 12 8 12 9v2c0 1.2-.5 2-2 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Beautify
+        </button>
+        <button class="btn-action btn-copy" onclick="jsonMinify()">Minify</button>
+        <button class="btn-action btn-copy" onclick="jsonClear()">Clear</button>
+      </div>
+    </div>
+  
+    <div class="card" style="flex:1; min-width:0;">
+      <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:12px;">
+        <div class="section-head" style="margin-bottom:0;">Output</div>
+        <div class="json-status" id="jsonStatus"></div>
+      </div>
+      <textarea class="field textarea tool-textarea output-area" id="jsonOutput" readonly placeholder="Formatted JSON will appear here..."></textarea>
+  
+      <div class="output-actions" style="margin-top:12px;">
+        <button class="btn-action btn-copy" onclick="jsonCopy()">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+            <rect x="4" y="4" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.3"/>
+            <path d="M2 11V2h9" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          </svg>
+          Copy output
+        </button>
+      </div>
+    </div>
+  
+    <div class="copy-toast" id="jsonToast">Copied!</div>
+  </div>
